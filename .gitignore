@@ -1,0 +1,7 @@
+/db/shortener.db
+/.bundle
+/vendor
+/log
+*.swp
+.idea
+.DS_Store
