@@ -77,6 +77,7 @@ bundle exec rspec
 - IDs are auto-incremented in SQLite
 - Each ID is obfuscated using XOR + encoded in **Base62**
 - Code is unique and deterministic (no collisions)
+- The service reuses the same short code for duplicate URLs.
 - Logic separated into:
   - `app.rb` – routes
   - `lib/shortener.rb` – Base62 + obfuscation
