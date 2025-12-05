@@ -1,23 +1,24 @@
-require 'rack/test'
+# spec/spec_helper.rb
 require 'rspec'
+require 'rack/test'
 
-# Set environment so Sinatra doesn't run production mode
 ENV['RACK_ENV'] = 'test'
 
-# Load the app (this should NOT auto-start server)
+# Load Sinatra modular app
 require_relative '../app'
+
+# Load DB setup
 require_relative '../config/database'
 
 RSpec.configure do |config|
   config.include Rack::Test::Methods
 
-  # Sinatra test app
+  # IMPORTANT: return a Rack application, not Sinatra class
   def app
-    Sinatra::Application
+    App.app   # ← This must exist in app.rb
   end
 
-  # DB cleanup before each test
   config.before(:each) do
-    URLS.delete if URLS
+    URLS.delete
   end
 end

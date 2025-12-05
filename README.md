@@ -1,101 +1,117 @@
-# shortlink-ruby
+# URL Shortener – Technical Test Submission
 
-A simple URL shortener implemented with **Ruby**, **Sinatra**, **SQLite**, and **Sequel**.  
-Provides two JSON endpoints:
-
-- `POST /encode` – shorten a long URL
-- `POST /decode` – resolve a short code back to the original URL
+This project was built for a backend technical test.  
+It implements a simple URL shortening service.
 
 ---
 
-## 🚀 Setup & Run
+## 🎯 Features
+
+- **POST `/encode`**  
+  Shortens a URL. Returns the **same code** for duplicate URLs.
+
+- **POST `/decode`**  
+  Resolves a short code back to the original URL.
+
+- **GET `/:code`**  
+  Optional 302 redirect to the original URL.
+
+- **Sinatra Modular Architecture**
+  - Controllers for HTTP routing
+  - Services for business logic
+  - Models wrapping Sequel dataset
+  - Concerns for JSON + error helpers (DRY)
+
+- **SQLite + Sequel ORM**  
+- **Rackup + Puma** for running the app
+
+---
+
+## 📁 Folder Structure
+
+```
+app/
+  controllers/    # Routing & HTTP handling
+  services/       # Business logic
+  models/         # Data access layer
+  concerns/       # Shared helpers (JSON, errors)
+config/           # Database setup
+lib/              # Base62 + obfuscation
+scripts/          # Init database
+app.rb
+config.ru
+```
+
+---
+
+## 🚀 Run the Project
 
 ### Install dependencies
-
-```bash
+```
 bundle install
 ```
 
-### Initialize database
-
-```bash
+### Initialize the database
+```
 ruby scripts/init_db.rb
 ```
 
-### Start server
-
-```bash
-bundle exec ruby app.rb
+### Start the server
+```
+bundle exec rackup -p 4567
 ```
 
-Service runs at: `http://localhost:4567`
+Server will be available at:  
+`http://localhost:4567`
 
 ---
 
-## 🧪 Tests
-
-```bash
-bundle exec rspec
-```
-
----
-
-## 📌 API
+## 📡 API Endpoints
 
 ### POST `/encode`
-
 **Request**
-
 ```json
-{ "url": "https://example.com" }
+{ "url": "https://google.com" }
 ```
 
 **Response**
-
 ```json
-{ "code": "Ab3d", "url": "https://example.com" }
+{ "code": "Ab3d", "url": "https://google.com" }
 ```
 
+---
+
 ### POST `/decode`
-
 **Request**
-
 ```json
 { "code": "Ab3d" }
 ```
 
 **Response**
-
 ```json
-{ "code": "Ab3d", "url": "https://example.com" }
+{ "code": "Ab3d", "url": "https://google.com" }
 ```
 
 ---
 
-## 🧠 Design
-
-- IDs are auto-incremented in SQLite
-- Each ID is obfuscated using XOR + encoded in **Base62**
-- Code is unique and deterministic (no collisions)
-- The service reuses the same short code for duplicate URLs.
-- Logic separated into:
-  - `app.rb` – routes
-  - `lib/shortener.rb` – Base62 + obfuscation
-  - `config/database.rb` – DB connection
-  - `scripts/init_db.rb` – schema creation
+### GET `/:code`
+Redirects to the original URL (302).
 
 ---
 
-## 🔐 Notes
+## 🧪 Testing (optional)
 
-- Basic validation: URL must start with `http://` or `https://`
-- Errors return JSON: `400` (invalid input) / `404` (not found)
+Run RSpec:
+```
+bundle exec rspec
+```
 
 ---
 
-## 📈 Future Improvements (optional)
+## 📌 Notes
 
-- Add redirect endpoint `GET /:code`
-- Add caching (Redis)
-- Add click analytics
-- Move SQLite → PostgreSQL if scaling
+This project focuses on:
+- Clear and maintainable structure  
+- Separation of concerns  
+- A lightweight, test-friendly implementation for the technical test  
+
