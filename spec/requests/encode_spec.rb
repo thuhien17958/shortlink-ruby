@@ -30,4 +30,15 @@ RSpec.describe 'POST /encode' do
 
     expect(second_code).to eq(first_code)
   end
+
+  it "returns 400 for invalid URL" do
+    post "/encode",
+      { url: "not-a-valid-url" }.to_json,
+      { "CONTENT_TYPE" => "application/json" }
+  
+    expect(last_response.status).to eq(400)
+  
+    json = JSON.parse(last_response.body)
+    expect(json["error"]).to eq("invalid url")
+  end  
 end
