@@ -13,4 +13,11 @@ module JsonHelpers
   rescue JSON::ParserError
     halt_json 400, error: 'invalid_json'
   end
+
+  def valid_url?(value)
+    uri = URI.parse(value.to_s)
+    %w[http https].include?(uri.scheme) && !uri.host.to_s.empty?
+  rescue URI::InvalidURIError
+    false
+  end
 end

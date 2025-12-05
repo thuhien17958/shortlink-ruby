@@ -17,6 +17,8 @@ class UrlsController < Sinatra::Base
     long_url = @payload['url'] || @payload['long_url']
     halt_json 400, error: 'missing url' if blank?(long_url)
 
+    halt_json 400, error: 'invalid url' unless valid_url?(long_url)
+
     service = UrlShortener.new
     result  = service.encode(long_url)
 
